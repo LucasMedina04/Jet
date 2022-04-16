@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clases", "Clases\Clases.csproj", "{90AF528D-AA32-412C-8268-471F3409AB69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jet", "Jet\Jet.csproj", "{3485699D-E504-46FA-9221-1EC872977AFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsola", "TestConsola\TestConsola.csproj", "{76118B05-CB27-48A8-B785-79F339F47200}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{90AF528D-AA32-412C-8268-471F3409AB69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90AF528D-AA32-412C-8268-471F3409AB69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90AF528D-AA32-412C-8268-471F3409AB69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90AF528D-AA32-412C-8268-471F3409AB69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3485699D-E504-46FA-9221-1EC872977AFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3485699D-E504-46FA-9221-1EC872977AFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3485699D-E504-46FA-9221-1EC872977AFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3485699D-E504-46FA-9221-1EC872977AFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76118B05-CB27-48A8-B785-79F339F47200}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76118B05-CB27-48A8-B785-79F339F47200}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76118B05-CB27-48A8-B785-79F339F47200}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76118B05-CB27-48A8-B785-79F339F47200}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,6 @@
+namespace Clases;
+
+class Game
+{
+    
+}
