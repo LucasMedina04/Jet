@@ -3,21 +3,21 @@ public static class Player
 {
     public static byte pos;
     public static byte Pos => pos;
-    static uint score;
-    public static uint Score => score;
-    static byte lives;
+    static ulong score;
+    public static ulong Score => score;
+    static byte lives = Const.MAX_LIVES;
     public static byte Lives => lives;
-    static byte level;
-    public static byte Level => level;
-    static byte health;
+    static int level;
+    public static int Level => level;
+    static byte health = Const.MAX_HEALTH;
     public static byte Health => health;
-    static byte shield;
+    static byte shield = 0;
     public static byte Shield => shield;
-    static byte fuel;
+    static byte fuel = Const.MAX_FUEL;
     public static byte Fuel => fuel;
-    static byte bulletSpeed;
+    static byte bulletSpeed = 1;
     public static byte BulletSpeed => bulletSpeed;
-    static byte damage;
+    static byte damage = 8;
     public static byte Damage => damage;
     static int money;
     public static int Money => money;
@@ -61,8 +61,8 @@ public static class Player
         health = 100;
         shield = 0;
         fuel = 100;
-        bulletSpeed = 0;
-        damage = 00;
+        bulletSpeed = 1;
+        damage = 8;
         money = 0;
     }
 }

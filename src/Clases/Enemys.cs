@@ -1,6 +1,6 @@
 namespace Clases;
 
-public class Enemy
+class Enemy
 {
     public byte pos;
     byte health;
@@ -41,23 +41,18 @@ public class Enemy
     {
         if (!isDead)
         {
-            Console.SetCursorPosition(pos, 0);
-            Console.ForegroundColor = color;
-            Console.Write("<O>");
-            Console.ResetColor();
+            Write.WriteAt("<O>", pos - 1, 0, color);
         }
         else
         {
-            Console.SetCursorPosition(pos, 0);
-            Console.Write(" ");
+            Write.WriteAt("   ", pos - 1, 0);
         }
     }
     public void MoveLeft()
     {
         if (!isDead)
         {
-            Console.SetCursorPosition(pos, 0);
-            Console.Write(" ");
+            Write.WriteAt("   ", pos - 1, 0);
             pos--;
             Render();
         }
@@ -66,8 +61,7 @@ public class Enemy
     {
         if (!isDead)
         {
-            Console.SetCursorPosition(pos, 0);
-            Console.Write(" ");
+            Write.WriteAt("   ", pos - 1, 0);
             pos++;
             Render();
         }
@@ -77,18 +71,18 @@ public class Enemy
         health -= Player.Damage;
         if (isDead)
         {
-            Console.SetCursorPosition(pos, 0);
-            Console.Write(" ");
+            Write.WriteAt("   ", pos - 1, 0);
         }
-        else
-        {
-            Console.BackgroundColor = ConsoleColor.DarkRed;
-            Thread.Sleep(100);
-            Render();
-        }
+        else AnimateTakeDamage();
     }
     public void Shoot()
         => shoot.Shoot(pos);
+    void AnimateTakeDamage()
+    {
+        Console.BackgroundColor = ConsoleColor.DarkRed;
+        Render();
+        Console.ResetColor();
+    }
 }
 
 public enum EnemyType
@@ -149,11 +143,8 @@ public class EnemyShoot
     {
         if (!isDead)
         {
-            Console.SetCursorPosition(posX, posY + pos);
-            Console.ForegroundColor = color;
-            Console.Write("|");
-            Console.ResetColor();
-            posX = pos;
+            Write.WriteAt("|", posX, posY + pos, color);
+            posY = pos;
         }
     }
 }
