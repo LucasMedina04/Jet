@@ -1,7 +1,8 @@
 ﻿namespace Clases;
 public static class Player
 {
-    public static byte pos;
+    public static List<PlayerShoot> shoots = new List<PlayerShoot>();
+    public static byte pos = Const.WINDOW_WIDTH / 2;
     public static byte Pos => pos;
     static ulong score;
     public static ulong Score => score;
@@ -18,7 +19,7 @@ public static class Player
     static byte bulletSpeed = 1;
     public static byte BulletSpeed => bulletSpeed;
     static byte damage = 8;
-    public static byte Damage => damage;
+    public static byte ShootDamage => damage;
     static int money;
     public static int Money => money;
     public static bool isDead => health <= 0;
@@ -39,8 +40,17 @@ public static class Player
         => health -= Health;
     public static void AddShield(byte Shield)
         => shield += Shield;
-    public static void DismissShield(byte Shield)
-        => shield -= Shield;
+    public static byte DismissShield(byte Shield)
+    {
+        int aux = Convert.ToInt32(shield) - Convert.ToInt32(Shield);
+        shield -= Shield;
+        if (aux < 0)
+            {
+                shield = 0;
+                return Convert.ToByte(-aux);
+            }
+        else return 0;
+    }
     public static void AddFuel(byte Fuel)
         => fuel += Fuel;
     public static void DismissFuel(byte Fuel)
@@ -64,5 +74,130 @@ public static class Player
         bulletSpeed = 1;
         damage = 8;
         money = 0;
+    }
+    public static void Render()
+    {
+        Write.WriteAt("<O>", pos - 1, Const.PLAYER_POS);
+        if (isShielded)
+            Write.WriteAt("S", pos, Const.PLAYER_POS);
+    }
+    public static void MoveLeft()
+    {
+        if (pos > 2)
+        {
+            Write.WriteAt(" ", pos + 1, Const.PLAYER_POS);
+            pos--;
+            Render();
+        }
+    }
+    public static void MoveRight()
+    {
+        if (pos < Const.WINDOW_WIDTH - 2)
+        {
+            Write.WriteAt(" ", pos - 1, Const.PLAYER_POS);
+            pos++;
+            Render();
+        }
+    }
+    public static void Update()
+    {
+        if (shoots is not null)
+        {
+            for (int i = 0; i < shoots.Count; i++)
+            {
+                for (int j = 0; j < EnemyController.enemies.Count; j++)
+                {
+                    if (shoots[i].posY == 1)
+                    {
+                        Write.WriteAt(" ", shoots[i].posX, 2);
+                        shoots.RemoveAt(i);
+                        i--;
+                        continue;
+                    }
+                    else shoots[i].Update();
+                }
+            }
+        }
+    }
+    public static void UpdateHealth()
+    {
+        UI.UpdateHealth();
+    }
+    public static void Shoot()
+    {
+        shoots.Add(new PlayerShoot(pos));
+    }
+    public static void Damage(byte Damage, bool AntiArmor)
+    {
+        if (AntiArmor)
+        {
+            DissmissHealth(Damage);
+            DismissShield(Convert.ToByte(2 * Damage));
+        }
+        else DissmissHealth(DismissShield(Damage));
+        UpdateHealth();
+    }
+}
+
+public class PlayerShoot
+{
+    public byte posX;
+    public byte posY = Const.PLAYER_POS - 1;
+    byte speed = Player.BulletSpeed;
+
+    public PlayerShoot(byte Pos)
+        => posX = Pos;
+    public void Update()
+    {
+        switch (speed)
+        {
+            case 1:
+                if (Game.Frame % 11 == 0)
+                    Move();
+                break;
+            case 2:
+                if (Game.Frame % 10 == 0 )
+                    Move();
+                break;
+            case 3:
+                if (Game.Frame % 9 == 0)
+                    Move();
+                break;
+            case 4:
+                if (Game.Frame % 8 == 0)
+                    Move();
+                break;
+            case 5:
+                if (Game.Frame % 7 == 0)
+                    Move();
+                break;
+            case 6:
+                if (Game.Frame % 6 == 0)
+                    Move();
+                break;
+            case 7:
+                if (Game.Frame % 5 == 0)
+                    Move();
+                break;
+            case 8:
+                if (Game.Frame % 4 == 0)
+                    Move();
+                break;
+            case 9:
+                if (Game.Frame % 3 == 0)
+                    Move();
+                break;
+            case 10:
+                if (Game.Frame % 2 == 0)
+                    Move();
+                break;
+        }
+    }
+    void Move()
+    {
+        Write.WriteAt("^", posX, posY);
+        if (posY != Const.PLAYER_POS - 1)
+        Write.WriteAt(" ", posX, posY + 1);
+        posY--;
     }
 }

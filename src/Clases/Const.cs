@@ -1,9 +1,11 @@
 namespace Clases;
-public static class Const
+static class Const
 {
     public static bool GameEnded = false;
     public static bool GamePaused = false;
-    public const byte SHOOT_POS = 0;
+    public const byte ENEMY_POS = 1;
+    public const byte SHOOT_POS = 2;
+    public const byte PLAYER_POS = 28;
     public const byte MAX_LIVES = 3;
     public const byte MAX_HEALTH = 100;
     public const byte MAX_SHIELD = 100;

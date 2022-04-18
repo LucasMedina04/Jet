@@ -1,7 +1,7 @@
 namespace Clases;
 using static Clases.Const;
 
-public static class Write
+static class Write
 {
     public static void WriteAt(string text, int x, int y)
     {
@@ -34,13 +34,9 @@ static class Menus
 {
     
 }
-static class Input
+static class UI
 {
-    
-}
-public static class UI
-{
-    public static void WriteFrames()
+    static void WriteFrames()
     {
         Write.WriteAt("╔", 0, 0);
         Write.WriteAt("╗", WINDOW_WIDTH, 0);
@@ -72,30 +68,28 @@ public static class UI
             Write.WriteAt("═", i, WINDOW_HEIGHT);
         }
     }
-    public static void WriteLives()
+    static void WriteLives()
     {
         Write.WriteAt("Lives: ", WINDOW_WIDTH + 2, 1);
         for (int i = 0; i < Player.Lives * 2; i = i + 2)
-        {
             Write.WriteAt("♥", WINDOW_WIDTH + 10 + (i * 2), 1, ConsoleColor.Red);
-        }
     }
-    public static void WriteScore()
+    static void WriteScore()
     {
         Write.WriteAt("Score: ", WINDOW_WIDTH + 2, 4);
         Write.WriteAt(Player.Score.ToString(), WINDOW_WIDTH + 9, 4, ConsoleColor.DarkCyan);
     }
-    public static void WriteMoney()
+    static void WriteMoney()
     {
         Write.WriteAt("Money: ", WINDOW_WIDTH + 2, 7);
         Write.WriteAt("$" + Player.Money.ToString(), WINDOW_WIDTH + 9, 7, ConsoleColor.Yellow);
     }
-    public static void WriteLevel()
+    static void WriteLevel()
     {
         Write.WriteAt("Level: ", WINDOW_WIDTH + 2, 10);
         Write.WriteAt(Player.Level.ToString(), WINDOW_WIDTH + 9, 10, ConsoleColor.Green);
     }
-    public static void WriteFuel()
+    static void WriteFuel()
     {
         Write.WriteAt("Fuel: ", WINDOW_WIDTH + 2, 13);
         Write.WriteAt(Player.Fuel.ToString() + "%", WINDOW_WIDTH + 9, 13, ConsoleColor.DarkBlue);
@@ -106,7 +100,7 @@ public static class UI
             else break;
         }
     }
-    public static void WriteShield()
+    static void WriteShield()
     {
         Write.WriteAt("Shield: ", WINDOW_WIDTH + 2, 16);
         Write.WriteAt(Player.Shield.ToString() + "%", WINDOW_WIDTH + 10, 16, ConsoleColor.DarkMagenta);
@@ -117,10 +111,14 @@ public static class UI
             else break;
         }
     }
-    public static void WriteHealth()
+    static void WriteHealth()
     {
         Write.WriteAt("Health: ", WINDOW_WIDTH + 2, 19);
         Write.WriteAt(Player.Health.ToString() + "%", WINDOW_WIDTH + 10, 19, ConsoleColor.DarkRed);
+        for (int i = 0; i < 19; i++)
+        {
+            Write.WriteAt(" ", i + WINDOW_WIDTH + 2, 20);
+        }
         for (int i = 10; i < 100; i += 10)
         {
             if (Player.Health >= i)
@@ -128,7 +126,7 @@ public static class UI
             else break;
         }
     }
-    public static void WriteBulletSpeed()
+    static void WriteBulletSpeed()
     {
         Write.WriteAt("Bullet Speed: ", WINDOW_WIDTH + 2, 23);
         Write.WriteAt(Player.BulletSpeed.ToString(), WINDOW_WIDTH + 16, 23, ConsoleColor.DarkYellow);
@@ -139,17 +137,19 @@ public static class UI
             else break;
         }
     }
-    public static void WriteDamage()
+    static void WriteDamage()
     {
         Write.WriteAt("Bullet Damage: ", WINDOW_WIDTH + 2, 26);
-        Write.WriteAt(Player.Damage.ToString(), WINDOW_WIDTH + 17, 26, ConsoleColor.DarkYellow);
+        Write.WriteAt(Player.ShootDamage.ToString(), WINDOW_WIDTH + 17, 26, ConsoleColor.DarkYellow);
         for (int i = 5; i < 50; i++)
         {
-            if (Player.Damage >= i)
+            if (Player.ShootDamage >= i)
                 Write.WriteAt("█", WINDOW_WIDTH + 1 + (2 * (i / 5)), 27, ConsoleColor.DarkYellow);
             else break;
         }
     }
+    public static void WritePause()
+        => Write.WriteAt("Game paused", WINDOW_WIDTH / 2 - 5, WINDOW_HEIGHT / 2, ConsoleColor.Red);
     public static void WriteAll()
     {
         WriteFrames();
@@ -162,6 +162,11 @@ public static class UI
         WriteHealth();
         WriteBulletSpeed();
         WriteDamage();
-        Thread.Sleep(1000);
+    }
+    public static void UpdateHealth()
+    {
+        WriteLives();
+        WriteShield();
+        WriteHealth();
     }
 }

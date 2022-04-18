@@ -2,59 +2,100 @@ namespace Clases;
 
 public class Game
 {
-    public static Task GameTask = new Task(() => { });
+    static byte frame = 0;
+    public static byte Frame => frame;
     public static void Main()
     {
-        GameTask = Task.Run(() =>
-        {
-            do
-            {
-                Frame();
-                if (Const.GamePaused)
-                {
-                    
-                }
-                else
-                {
-                    Update();
-                }
-            } while (true);
-        });
-    }
-    public static void Update()
-    {
-        
-    }
-    static void Pause() => Const.GamePaused = true;
-    static void Resume() => Const.GamePaused = false;
-    /*public static void Main()
-    {
-        Console.CursorVisible = false;
         Console.Title = "Jet";
-        Console.ForegroundColor = ConsoleColor.White;
-        Console.BackgroundColor = ConsoleColor.Black;
-        Write.WriteAt("Loading...", Console.WindowWidth / 2 - 5, Console.WindowHeight / 2);
-        Start();
-    }*/
-    public static void Finallice()
+        Console.Clear();
+        Console.CursorVisible = false;
+        Write.WriteAt("Loading...", Const.WINDOW_WIDTH / 2 - 5, Const.WINDOW_HEIGHT / 2, ConsoleColor.Yellow);
+        UI.WriteAll();
+        EnemyController.AddEnemy(EnemyType.Strong);
+        EnemyController.AddEnemy(EnemyType.Basic);
+        EnemyController.AddEnemy(EnemyType.Fast);
+        Player.Render();
+        Write.WriteAt("          ", Const.WINDOW_WIDTH / 2 - 5, Const.WINDOW_HEIGHT / 2);
+        Thread SubHilo = new Thread(()=>
+        {
+            while (true)
+            {
+                Fps();
+                if (!Const.GamePaused)
+                Update();
+            }
+        });
+        SubHilo.Start();
+        while (true)
+        {
+            ReadKey();
+        }
+    }
+    static void ReadKey()
+        => Verifications.CheckKey(Console.ReadKey(true));
+    static void Update()
+    {
+        Player.Update();
+        EnemyController.Update();
+    }
+    internal static void Finallice()
     {
         Console.Clear();
-        Console.WriteLine("Game Over");
         Console.WriteLine("Press any key to exit");
         Console.ReadKey();
         Environment.Exit(0);
     }
-    static void PauseTask()
+    static void Fps()
     {
-        ConsoleKey key;
-        do
-        {
-            key = Console.ReadKey().Key;
-            if (key == ConsoleKey.Escape)
-            {
-                Pause();
-            }
-        } while (true);
+        Thread.Sleep(1000/7);
+        if (frame < 11)
+        frame++;
+        else frame = 0;
     }
-    static void Frame() => Thread.Sleep(1000/30);
+}
+
+static class Verifications
+{
+    public static void CheckKey(ConsoleKeyInfo key)
+    {
+        if (key.Key == ConsoleKey.Escape)
+        {
+            Pause();
+            return;
+        }
+        if (!Const.GamePaused)
+        {
+            switch (key.Key)
+            {
+                case ConsoleKey.Escape:
+                    Pause();
+                    break;
+                case ConsoleKey.LeftArrow:
+                    Player.MoveLeft();
+                    break;
+                case ConsoleKey.RightArrow:
+                    Player.MoveRight();
+                    break;
+                default:
+                    Player.Render();
+                    break;
+                case ConsoleKey.Spacebar:
+                    Player.Shoot();
+                    break;
+            }
+        }
+    }
+    static void Pause()
+    {
+        if (Const.GamePaused)
+        {
+            Write.WriteAt("      ", Const.WINDOW_WIDTH / 2 - 3, Const.WINDOW_HEIGHT / 2);
+            Const.GamePaused = false;
+        }
+        else
+        {
+            Write.WriteAt("PAUSED", Const.WINDOW_WIDTH / 2 - 3, Const.WINDOW_HEIGHT / 2, ConsoleColor.Red);
+            Const.GamePaused = true;
+        }
+    }
 }
