@@ -52,6 +52,11 @@ public class Game
         frame++;
         else frame = 0;
     }
+    public static void EndGame()
+    {
+        Const.GameEnded = true;
+        Write.WriteAt("GAME OVER", Const.WINDOW_WIDTH / 2 - 6, Const.WINDOW_HEIGHT / 2, ConsoleColor.Red);
+    }
 }
 
 static class Verifications
@@ -82,6 +87,38 @@ static class Verifications
                 case ConsoleKey.Spacebar:
                     Player.Shoot();
                     break;
+                
+                /*Debug*/
+                case ConsoleKey.F1:
+                    Player.AddBulletSpeed();
+                    UI.UpdateBulletSpeed();
+                    break;
+                case ConsoleKey.F2:
+                    Player.DissmissBulletSpeed();
+                    UI.UpdateBulletSpeed();
+                    break;
+                case ConsoleKey.F3:
+                    Player.AddDamage();
+                    UI.UpdateDamage();
+                    break;
+                case ConsoleKey.F4:
+                    Player.DissmissDamage();
+                    UI.UpdateDamage();
+                    break;
+                case ConsoleKey.F5:
+                    Player.Damage(5, false);
+                    break;
+                case ConsoleKey.F6:
+                    Player.Damage(5, true);
+                    break;
+                case ConsoleKey.F7:
+                    Player.AddShield(10);
+                    UI.UpdateHealth();
+                    break;
+                case ConsoleKey.F8:
+                    Game.EndGame();
+                    break;
+                /*Debug*/
             }
         }
     }

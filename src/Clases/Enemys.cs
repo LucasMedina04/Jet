@@ -166,7 +166,7 @@ public class EnemyShoot
         switch (Speed)
         {
             case 2:
-                if (Game.Frame % 10 == 0 )
+                if (Game.Frame % 10 == 0)
                     Move();
                 break;
             case 4:
@@ -184,19 +184,28 @@ public class EnemyShoot
         }
         if (PosY == Const.PLAYER_POS)
         {
-            if (Player.Pos == PosX)
+            if (Player.Pos == PosX || Player.Pos + 1 == PosX || Player.Pos - 1 == PosX)
                 Player.Damage(damage, armorPenetration);
+            Write.WriteAt(" ", PosX, PosY);
             ResetShoot();
         }
-        for (int i = 0; i < Player.shoots.Count; i++)
+        else
         {
-            if (Player.shoots[i].posX == PosX)
+            for (int i = 0; i < Player.shoots.Count; i++)
             {
-                if (Player.shoots[i].posY <= PosY)
+                if (Player.shoots[i].posX == PosX)
                 {
-                    Player.shoots.RemoveAt(i);
-                    ResetShoot();
-                    break;
+                    if (Player.shoots[i].posY <= PosY)
+                    {
+                        Write.WriteAt(" ", PosX, Player.shoots[i].posY);
+                        Write.WriteAt(" ", PosX, Player.shoots[i].posY + 1);
+                        Player.shoots.RemoveAt(i);
+                        Write.WriteAt(" ", PosX, PosY);
+                        Write.WriteAt(" ", PosX, PosY - 1);
+                        Write.WriteAt(" ", PosX, PosY + 1);
+                        ResetShoot();
+                        break;
+                    }
                 }
             }
         }

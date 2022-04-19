@@ -37,19 +37,32 @@ public static class Player
     public static void AddHealth(byte Health)
         => health += Health;
     public static void DissmissHealth(byte Health)
-        => health -= Health;
+    {
+        int aux = Convert.ToInt32(health) - Convert.ToInt32(Health);
+        if (aux < 0)
+        {
+            lives--;
+            health = 0;
+            if (lives <= 0)
+                Game.EndGame();
+        }
+        else health = Convert.ToByte(aux);
+    }
     public static void AddShield(byte Shield)
         => shield += Shield;
     public static byte DismissShield(byte Shield)
     {
         int aux = Convert.ToInt32(shield) - Convert.ToInt32(Shield);
-        shield -= Shield;
         if (aux < 0)
             {
                 shield = 0;
                 return Convert.ToByte(-aux);
             }
-        else return 0;
+        else
+        {
+            shield = Convert.ToByte(aux);
+            return 0;
+        }
     }
     public static void AddFuel(byte Fuel)
         => fuel += Fuel;
@@ -105,16 +118,13 @@ public static class Player
         {
             for (int i = 0; i < shoots.Count; i++)
             {
-                for (int j = 0; j < EnemyController.enemies.Count; j++)
+                shoots[i].Update();
+                if (shoots[i].posY == 1)
                 {
-                    if (shoots[i].posY == 1)
-                    {
-                        Write.WriteAt(" ", shoots[i].posX, 2);
-                        shoots.RemoveAt(i);
-                        i--;
-                        continue;
-                    }
-                    else shoots[i].Update();
+                    Write.WriteAt(" ", shoots[i].posX, 2);
+                    shoots.RemoveAt(i);
+                    i--;
+                    continue;
                 }
             }
         }
@@ -137,6 +147,12 @@ public static class Player
         else DissmissHealth(DismissShield(Damage));
         UpdateHealth();
     }
+    /*Debug*/
+    public static void DissmissBulletSpeed()
+        => bulletSpeed--;
+    public static void DissmissDamage()
+        => damage--;
+    /*Debug*/
 }
 
 public class PlayerShoot
@@ -152,44 +168,43 @@ public class PlayerShoot
         switch (speed)
         {
             case 1:
-                if (Game.Frame % 11 == 0)
+                if (Game.Frame == 0)
                     Move();
                 break;
             case 2:
-                if (Game.Frame % 10 == 0 )
+                if (Game.Frame == 6)
                     Move();
                 break;
             case 3:
-                if (Game.Frame % 9 == 0)
+                if (Game.Frame == 4 || Game.Frame == 8)
                     Move();
                 break;
             case 4:
-                if (Game.Frame % 8 == 0)
+                if (Game.Frame == 3 || Game.Frame == 6 || Game.Frame == 9)
                     Move();
                 break;
             case 5:
-                if (Game.Frame % 7 == 0)
+                if (Game.Frame == 2 || Game.Frame == 4 || Game.Frame == 6 || Game.Frame == 8)
                     Move();
                 break;
             case 6:
-                if (Game.Frame % 6 == 0)
+                if (Game.Frame == 1 || Game.Frame == 3 || Game.Frame == 5 || Game.Frame == 7 || Game.Frame == 9)
                     Move();
                 break;
             case 7:
-                if (Game.Frame % 5 == 0)
+                if (Game.Frame != 0 && Game.Frame != 4 && Game.Frame != 7)
                     Move();
                 break;
             case 8:
-                if (Game.Frame % 4 == 0)
+                if (Game.Frame != 0 && Game.Frame != 6)
                     Move();
                 break;
             case 9:
-                if (Game.Frame % 3 == 0)
+                if (Game.Frame != 0)
                     Move();
                 break;
             case 10:
-                if (Game.Frame % 2 == 0)
-                    Move();
+                Move();
                 break;
         }
     }

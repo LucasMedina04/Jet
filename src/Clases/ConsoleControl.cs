@@ -71,8 +71,13 @@ static class UI
     static void WriteLives()
     {
         Write.WriteAt("Lives: ", WINDOW_WIDTH + 2, 1);
-        for (int i = 0; i < Player.Lives * 2; i = i + 2)
-            Write.WriteAt("♥", WINDOW_WIDTH + 10 + (i * 2), 1, ConsoleColor.Red);
+        if (Player.Lives == 3)
+            Write.WriteAt("♥   ♥   ♥", WINDOW_WIDTH + 10, 1, ConsoleColor.Red);
+        else if (Player.Lives == 2)
+            Write.WriteAt("♥   ♥    ", WINDOW_WIDTH + 10, 1, ConsoleColor.Red);
+        else Write.WriteAt("♥        ", WINDOW_WIDTH + 10, 1, ConsoleColor.Red);
+        /*for (int i = 0; i < Player.Lives * 2; i = i + 2)
+            Write.WriteAt("♥", WINDOW_WIDTH + 10 + (i * 2), 1, ConsoleColor.Red);*/
     }
     static void WriteScore()
     {
@@ -92,7 +97,11 @@ static class UI
     static void WriteFuel()
     {
         Write.WriteAt("Fuel: ", WINDOW_WIDTH + 2, 13);
-        Write.WriteAt(Player.Fuel.ToString() + "%", WINDOW_WIDTH + 9, 13, ConsoleColor.DarkBlue);
+        Write.WriteAt(Player.Fuel.ToString() + "%  ", WINDOW_WIDTH + 9, 13, ConsoleColor.DarkBlue);
+        for (int i = 0; i < 19; i++)
+        {
+            Write.WriteAt(" ", i + WINDOW_WIDTH + 2, 14);
+        }
         for (int i = 10; i < 100; i += 10)
         {
             if (Player.Fuel >= i)
@@ -103,7 +112,11 @@ static class UI
     static void WriteShield()
     {
         Write.WriteAt("Shield: ", WINDOW_WIDTH + 2, 16);
-        Write.WriteAt(Player.Shield.ToString() + "%", WINDOW_WIDTH + 10, 16, ConsoleColor.DarkMagenta);
+        Write.WriteAt(Player.Shield.ToString() + "%  ", WINDOW_WIDTH + 10, 16, ConsoleColor.DarkMagenta);
+        for (int i = 0; i < 19; i++)
+        {
+            Write.WriteAt(" ", i + WINDOW_WIDTH + 2, 17);
+        }
         for (int i = 10; i < 100; i += 10)
         {
             if (Player.Shield >= i)
@@ -114,7 +127,7 @@ static class UI
     static void WriteHealth()
     {
         Write.WriteAt("Health: ", WINDOW_WIDTH + 2, 19);
-        Write.WriteAt(Player.Health.ToString() + "%", WINDOW_WIDTH + 10, 19, ConsoleColor.DarkRed);
+        Write.WriteAt(Player.Health.ToString() + "%  ", WINDOW_WIDTH + 10, 19, ConsoleColor.DarkRed);
         for (int i = 0; i < 19; i++)
         {
             Write.WriteAt(" ", i + WINDOW_WIDTH + 2, 20);
@@ -129,7 +142,11 @@ static class UI
     static void WriteBulletSpeed()
     {
         Write.WriteAt("Bullet Speed: ", WINDOW_WIDTH + 2, 23);
-        Write.WriteAt(Player.BulletSpeed.ToString(), WINDOW_WIDTH + 16, 23, ConsoleColor.DarkYellow);
+        Write.WriteAt(Player.BulletSpeed.ToString() + "  ", WINDOW_WIDTH + 16, 23, ConsoleColor.DarkYellow);
+        for (int i = 0; i < 19; i++)
+        {
+            Write.WriteAt(" ", i + WINDOW_WIDTH + 2, 24);
+        }
         for (int i = 1; i < 10; i++)
         {
             if (Player.BulletSpeed >= i)
@@ -140,7 +157,11 @@ static class UI
     static void WriteDamage()
     {
         Write.WriteAt("Bullet Damage: ", WINDOW_WIDTH + 2, 26);
-        Write.WriteAt(Player.ShootDamage.ToString(), WINDOW_WIDTH + 17, 26, ConsoleColor.DarkYellow);
+        Write.WriteAt(Player.ShootDamage.ToString() + "  ", WINDOW_WIDTH + 17, 26, ConsoleColor.DarkYellow);
+        for (int i = 0; i < 19; i++)
+        {
+            Write.WriteAt(" ", i + WINDOW_WIDTH + 2, 27);
+        }
         for (int i = 5; i < 50; i++)
         {
             if (Player.ShootDamage >= i)
@@ -169,4 +190,8 @@ static class UI
         WriteShield();
         WriteHealth();
     }
+    public static void UpdateBulletSpeed()
+        => WriteBulletSpeed();
+    public static void UpdateDamage()
+        => WriteDamage();
 }
