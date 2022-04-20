@@ -60,20 +60,20 @@ public class Game
         Write.WriteAt("[F6] : Hit player by 5 damage (armor penetration)", 58, 16);
         Write.WriteAt("[F7] : Add 10 Shield", 58, 18);
         Write.WriteAt("[F8] : Add 10 Health", 58, 20);
+        Write.WriteAt("[F9] : Increase Level", 58, 22);
     }
     public static void NewGame()
     {
+        LevelController.Restart();
         Player.ResetAll();
+        LevelController.Update();
         Const.GameEnded = false;
         Const.GamePaused = false;
-        Write.WriteAt("Loading...", Const.WINDOW_WIDTH / 2 - 5, Const.WINDOW_HEIGHT / 2, ConsoleColor.Yellow);
         UI.WriteAll();
         EnemyController.Reset();
-        EnemyController.AddEnemy(EnemyType.Strong);
-        EnemyController.AddEnemy(EnemyType.Basic);
-        EnemyController.AddEnemy(EnemyType.Boss);
         Player.Render();
-        Write.WriteAt("          ", Const.WINDOW_WIDTH / 2 - 5, Const.WINDOW_HEIGHT / 2);
+        Thread.Sleep(1000);
+        Write.WriteAt("              " + LevelController.Level_ , Const.WINDOW_WIDTH / 2 - (7 - Convert.ToInt32(LevelController.Level_)), Const.WINDOW_HEIGHT / 2);
         new Thread(()=>
         {
             while (!Const.GameEnded)
@@ -167,6 +167,10 @@ static class Verifications
                             Player.AddHealth(10);
                             UI.UpdateHealth();
                         }
+                        break;
+                    case ConsoleKey.F9:
+                        if (Game.debug)
+                            LevelController.Update();
                         break;
                     case ConsoleKey.F12:
                         if (Game.debug)

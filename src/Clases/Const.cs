@@ -12,7 +12,8 @@ static class Const
     public const byte MAX_FUEL = 100;
     public const byte MAX_BULLET_SPEED = 10;
     public const byte MAX_DAMAGE = 10;
-    public const int MAX_MONEY = 5000;
-    public const int WINDOW_WIDTH = 36;
-    public const int WINDOW_HEIGHT = 29;
+    public const uint MAX_MONEY = 5000;
+    public const byte WINDOW_WIDTH = 36;
+    public const byte WINDOW_HEIGHT = 29;
+    public const byte MAX_SHOOTS = 10;
 }

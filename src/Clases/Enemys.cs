@@ -77,7 +77,7 @@ public class Enemy
     {
         for (int i = 0; i < Player.shoots.Count; i++)
         {
-            if (Player.shoots[i].posX == posX && Player.shoots[i].posY == posY)
+            if ((Player.shoots[i].posX == posX || Player.shoots[i].posX == posX - 1|| Player.shoots[i].posX == posX + 1) && Player.shoots[i].posY == posY + 1)
             {
                 Player.shoots.RemoveAt(i);
                 i--;
@@ -202,7 +202,6 @@ public class EnemyShoot
                         Player.shoots.RemoveAt(i);
                         Write.WriteAt(" ", PosX, PosY);
                         Write.WriteAt(" ", PosX, PosY - 1);
-                        Write.WriteAt(" ", PosX, PosY + 1);
                         ResetShoot();
                         break;
                     }
@@ -228,7 +227,7 @@ public class EnemyShoot
 public static class EnemyController
 {
     static List<Enemy> enemies = new List<Enemy>();
-    public static byte Enemies
+    public static uint Enemies
         => Convert.ToByte(enemies.Count);
     public static void AddEnemy(EnemyType type)
         => enemies.Add(new Enemy(Convert.ToByte(new Random().Next(2, Const.WINDOW_WIDTH - 1)), type));

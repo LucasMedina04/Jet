@@ -65,9 +65,17 @@ public static class Player
     public static void DismissFuel(byte Fuel)
         => fuel -= Fuel;
     public static void AddBulletSpeed()
-        => bulletSpeed++;
+    {
+        if (bulletSpeed < Const.MAX_BULLET_SPEED)
+            bulletSpeed++;
+        else bulletSpeed = Const.MAX_BULLET_SPEED;
+    }
     public static void AddDamage()
-        => damage++;
+    {
+        if (damage < Const.MAX_DAMAGE)
+            damage += 8;
+        else damage = Const.MAX_DAMAGE;
+    }
     public static void AddMoney(int Money)
         => money += Money;
     public static void SubstractMoney(int Money)
@@ -127,7 +135,10 @@ public static class Player
     public static void UpdateHealth()
         => UI.UpdateHealth();
     public static void Shoot()
-        => shoots.Add(new PlayerShoot(pos));
+    {
+        if (shoots.Count < Const.MAX_SHOOTS)
+            shoots.Add(new PlayerShoot(pos));
+    }
     public static void Damage(byte Damage, bool AntiArmor)
     {
         if (AntiArmor)
