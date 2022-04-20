@@ -91,8 +91,8 @@ static class UI
     }
     static void WriteLevel()
     {
-        Write.WriteAt("Level: ", WINDOW_WIDTH + 2, 10);
-        Write.WriteAt(Player.Level.ToString(), WINDOW_WIDTH + 9, 10, ConsoleColor.Green);
+        /*Write.WriteAt("Level: ", WINDOW_WIDTH + 2, 10);
+        Write.WriteAt(Player.Level.ToString(), WINDOW_WIDTH + 9, 10, ConsoleColor.Green);*/
     }
     static void WriteFuel()
     {

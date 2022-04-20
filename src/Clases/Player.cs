@@ -8,8 +8,6 @@ public static class Player
     public static ulong Score => score;
     static byte lives = Const.MAX_LIVES;
     public static byte Lives => lives;
-    static int level;
-    public static int Level => level;
     static byte health = Const.MAX_HEALTH;
     public static byte Health => health;
     static byte shield = 0;
@@ -32,8 +30,6 @@ public static class Player
         => lives++;
     public static void DismissLife()
         => lives--;
-    public static void AddLevel()
-        => level++;
     public static void AddHealth(byte Health)
         => health += Health;
     public static void DissmissHealth(byte Health)
@@ -80,7 +76,6 @@ public static class Player
     {
         score = 0;
         lives = 3;
-        level = 1;
         health = 100;
         shield = 0;
         fuel = 100;
