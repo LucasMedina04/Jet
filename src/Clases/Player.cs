@@ -130,13 +130,9 @@ public static class Player
         }
     }
     public static void UpdateHealth()
-    {
-        UI.UpdateHealth();
-    }
+        => UI.UpdateHealth();
     public static void Shoot()
-    {
-        shoots.Add(new PlayerShoot(pos));
-    }
+        => shoots.Add(new PlayerShoot(pos));
     public static void Damage(byte Damage, bool AntiArmor)
     {
         if (AntiArmor)
@@ -148,9 +144,9 @@ public static class Player
         UpdateHealth();
     }
     /*Debug*/
-    public static void DissmissBulletSpeed()
+    public static void DismissBulletSpeed()
         => bulletSpeed--;
-    public static void DissmissDamage()
+    public static void DismissDamage()
         => damage--;
     /*Debug*/
 }

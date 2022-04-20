@@ -2,6 +2,7 @@ namespace Clases;
 
 public class Game
 {
+    public static bool debug = false;
     static byte frame = 0;
     public static byte Frame => frame;
     public static void Main()
@@ -9,23 +10,7 @@ public class Game
         Console.Title = "Jet";
         Console.Clear();
         Console.CursorVisible = false;
-        Write.WriteAt("Loading...", Const.WINDOW_WIDTH / 2 - 5, Const.WINDOW_HEIGHT / 2, ConsoleColor.Yellow);
-        UI.WriteAll();
-        EnemyController.AddEnemy(EnemyType.Strong);
-        EnemyController.AddEnemy(EnemyType.Basic);
-        EnemyController.AddEnemy(EnemyType.Fast);
-        Player.Render();
-        Write.WriteAt("          ", Const.WINDOW_WIDTH / 2 - 5, Const.WINDOW_HEIGHT / 2);
-        Thread SubHilo = new Thread(()=>
-        {
-            while (true)
-            {
-                Fps();
-                if (!Const.GamePaused)
-                Update();
-            }
-        });
-        SubHilo.Start();
+        NewGame();
         while (true)
         {
             ReadKey();
@@ -37,6 +22,10 @@ public class Game
     {
         Player.Update();
         EnemyController.Update();
+        /*Debug*/
+        if (debug)
+            Debug();
+        /*Debug*/
     }
     internal static void Finallice()
     {
@@ -55,7 +44,45 @@ public class Game
     public static void EndGame()
     {
         Const.GameEnded = true;
+        Verifications.Clear();
         Write.WriteAt("GAME OVER", Const.WINDOW_WIDTH / 2 - 6, Const.WINDOW_HEIGHT / 2, ConsoleColor.Red);
+    }
+    static void Debug()
+    {
+        Write.WriteAt("Frame: " + Frame + "  ", 58, 0);
+        Write.WriteAt("Bullets: " + Player.shoots.Count + "  ", 58, 2);
+        Write.WriteAt("Enemies: " + EnemyController.Enemies + "  ", 58, 4);
+        Write.WriteAt("[F1] : Add Bullet Speed", 58, 6);
+        Write.WriteAt("[F2] : Dismiss Bullet Speed", 58, 8);
+        Write.WriteAt("[F3] : Add Bullet Damage", 58, 10);
+        Write.WriteAt("[F4] : Dismiss Bullet Damage", 58, 12);
+        Write.WriteAt("[F5] : Hit player by 5 damage", 58, 14);
+        Write.WriteAt("[F6] : Hit player by 5 damage (armor penetration)", 58, 16);
+        Write.WriteAt("[F7] : Add 10 Shield", 58, 18);
+        Write.WriteAt("[F8] : Add 10 Health", 58, 20);
+    }
+    public static void NewGame()
+    {
+        Player.ResetAll();
+        Const.GameEnded = false;
+        Const.GamePaused = false;
+        Write.WriteAt("Loading...", Const.WINDOW_WIDTH / 2 - 5, Const.WINDOW_HEIGHT / 2, ConsoleColor.Yellow);
+        UI.WriteAll();
+        EnemyController.Reset();
+        EnemyController.AddEnemy(EnemyType.Strong);
+        EnemyController.AddEnemy(EnemyType.Basic);
+        EnemyController.AddEnemy(EnemyType.Boss);
+        Player.Render();
+        Write.WriteAt("          ", Const.WINDOW_WIDTH / 2 - 5, Const.WINDOW_HEIGHT / 2);
+        new Thread(()=>
+        {
+            while (!Const.GameEnded)
+            {
+                Fps();
+                if (!Const.GamePaused)
+                Update();
+            }
+        }).Start();
     }
 }
 
@@ -63,62 +90,103 @@ static class Verifications
 {
     public static void CheckKey(ConsoleKeyInfo key)
     {
-        if (key.Key == ConsoleKey.Escape)
+        if (!Const.GameEnded)
         {
-            Pause();
-            return;
+            if (key.Key == ConsoleKey.Escape)
+            {
+                Pause();
+                return;
+            }
+            if (!Const.GamePaused)
+            {
+                switch (key.Key)
+                {
+                    case ConsoleKey.Escape:
+                        Pause();
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        Player.MoveLeft();
+                        break;
+                    case ConsoleKey.RightArrow:
+                        Player.MoveRight();
+                        break;
+                    default:
+                        Player.Render();
+                        break;
+                    case ConsoleKey.Spacebar:
+                        Player.Shoot();
+                        break;
+                    
+                    /*Debug*/
+                    case ConsoleKey.F1:
+                        if (Game.debug)
+                        {
+                            Player.AddBulletSpeed();
+                            UI.UpdateBulletSpeed();
+                        }
+                        break;
+                    case ConsoleKey.F2:
+                        if (Game.debug)
+                        {
+                            Player.DismissBulletSpeed();
+                            UI.UpdateBulletSpeed();
+                        }
+                        break;
+                    case ConsoleKey.F3:
+                        if (Game.debug)
+                        {
+                            Player.AddDamage();
+                            UI.UpdateDamage();
+                        }
+                        break;
+                    case ConsoleKey.F4:
+                        if (Game.debug)
+                        {
+                            Player.DismissDamage();
+                            UI.UpdateDamage();
+                        }
+                        break;
+                    case ConsoleKey.F5:
+                        if (Game.debug)
+                            Player.Damage(5, false);
+                        break;
+                    case ConsoleKey.F6:
+                        if (Game.debug)
+                            Player.Damage(5, true);
+                        break;
+                    case ConsoleKey.F7:
+                        if (Game.debug)
+                        {
+                            Player.AddShield(10);
+                            UI.UpdateHealth();
+                        }
+                        break;
+                    case ConsoleKey.F8:
+                        if (Game.debug)
+                        {
+                            Player.AddHealth(10);
+                            UI.UpdateHealth();
+                        }
+                        break;
+                    case ConsoleKey.F12:
+                        if (Game.debug)
+                        Game.debug = false;
+                        else Game.debug = true;
+                        break;
+                    /*Debug*/
+                }
+            }
         }
-        if (!Const.GamePaused)
+        else
         {
             switch (key.Key)
             {
                 case ConsoleKey.Escape:
-                    Pause();
+                    Game.Finallice();
                     break;
-                case ConsoleKey.LeftArrow:
-                    Player.MoveLeft();
+                case ConsoleKey.Enter:
+                    Game.NewGame();
                     break;
-                case ConsoleKey.RightArrow:
-                    Player.MoveRight();
-                    break;
-                default:
-                    Player.Render();
-                    break;
-                case ConsoleKey.Spacebar:
-                    Player.Shoot();
-                    break;
-                
-                /*Debug*/
-                case ConsoleKey.F1:
-                    Player.AddBulletSpeed();
-                    UI.UpdateBulletSpeed();
-                    break;
-                case ConsoleKey.F2:
-                    Player.DissmissBulletSpeed();
-                    UI.UpdateBulletSpeed();
-                    break;
-                case ConsoleKey.F3:
-                    Player.AddDamage();
-                    UI.UpdateDamage();
-                    break;
-                case ConsoleKey.F4:
-                    Player.DissmissDamage();
-                    UI.UpdateDamage();
-                    break;
-                case ConsoleKey.F5:
-                    Player.Damage(5, false);
-                    break;
-                case ConsoleKey.F6:
-                    Player.Damage(5, true);
-                    break;
-                case ConsoleKey.F7:
-                    Player.AddShield(10);
-                    UI.UpdateHealth();
-                    break;
-                case ConsoleKey.F8:
-                    Game.EndGame();
-                    break;
-                /*Debug*/
             }
         }
     }
@@ -133,6 +201,16 @@ static class Verifications
         {
             Write.WriteAt("PAUSED", Const.WINDOW_WIDTH / 2 - 3, Const.WINDOW_HEIGHT / 2, ConsoleColor.Red);
             Const.GamePaused = true;
+        }
+    }
+    public static void Clear()
+    {
+        for (int i = 1; i < Const.WINDOW_WIDTH - 1; i++)
+        {
+            for (int j = 1; j < Const.WINDOW_HEIGHT - 1; j++)
+            {
+                Write.WriteAt(" ", i, j);
+            }
         }
     }
 }

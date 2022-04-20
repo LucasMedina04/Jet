@@ -227,9 +227,11 @@ public class EnemyShoot
 
 public static class EnemyController
 {
-    public static List<Enemy> enemies = new List<Enemy>();
+    static List<Enemy> enemies = new List<Enemy>();
+    public static byte Enemies
+        => Convert.ToByte(enemies.Count);
     public static void AddEnemy(EnemyType type)
-        => enemies.Add(new Enemy(Convert.ToByte(new Random().Next(1, Const.WINDOW_WIDTH - 1)), type));
+        => enemies.Add(new Enemy(Convert.ToByte(new Random().Next(2, Const.WINDOW_WIDTH - 1)), type));
     public static void Update()
     {
         for (int i = 0; i < enemies.Count; i++)
@@ -243,4 +245,6 @@ public static class EnemyController
             }
         }
     }
+    public static void Reset()
+        => enemies.Clear();
 }
