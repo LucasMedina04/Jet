@@ -19,10 +19,12 @@ static class LevelController
     public static void Update()
     {
         level++;
+        if (level > 1)
+            Shop.Open();
         list.Clear();
         Verifications.Clear();
         int lenght = level.ToString().Length / 2;
-        Write.WriteAt("Loading level " + level, Const.WINDOW_WIDTH / 2 - (7 - lenght), Const.WINDOW_HEIGHT / 2, ConsoleColor.Green);
+        Write.WriteAt("Loading level " + level, Const.WINDOW_WIDTH / 2 - (8 - lenght), Const.WINDOW_HEIGHT / 2, ConsoleColor.Green);
         Random rnd = new(DateTime.Now.Millisecond);
         list.Clear();
         if (level % 5 == 0) AddBoss();
@@ -74,7 +76,8 @@ static class LevelController
                     AddFast();
                     break;
             }
-            
+            Level.Update(list);
+            return;
         }
         else
         {
@@ -109,34 +112,63 @@ static class LevelController
         Level.Update(list);
     }
     static void AddBasic()
-        => list.Add(EnemyType.Basic);
+    {
+        if (list.Count < Const.MAX_ENEMIES) list.Add(EnemyType.Basic);
+    }
     static void AddBasic(int times)
     {
-        for (int i = 0; i < times; i++) AddBasic();
+        for (int i = 0; i < times; i++)
+        {
+            if (list.Count < Const.MAX_ENEMIES) AddBasic();
+            else return;
+        }
     }
     static void AddFast()
-        => list.Add(EnemyType.Fast);
+    {
+        if (list.Count < Const.MAX_ENEMIES) list.Add(EnemyType.Fast);
+    }
     static void AddFast(int times)
     {
-        for (int i = 0; i < times; i++) AddFast();
+        for (int i = 0; i < times; i++)
+        {
+            if (list.Count < Const.MAX_ENEMIES) AddFast();
+        }
     }
     static void AddAntiarmor()
-        => list.Add(EnemyType.AntiArmor);
+    {
+        if (list.Count < Const.MAX_ENEMIES) list.Add(EnemyType.AntiArmor);
+    }
     static void AddAntiarmor(int times)
     {
-        for (int i = 0; i < times; i++) AddAntiarmor();
+        for (int i = 0; i < times; i++)
+        {
+            if (list.Count < Const.MAX_ENEMIES) AddAntiarmor();
+            else return;
+        }
     }
     static void AddStrong()
-        => list.Add(EnemyType.Strong);
+    {
+        if (list.Count < Const.MAX_ENEMIES) list.Add(EnemyType.Strong);
+    }
     static void AddStrong(int times)
     {
-        for (int i = 0; i < times; i++) AddStrong();
+        for (int i = 0; i < times; i++)
+        {
+            if (list.Count < Const.MAX_ENEMIES) AddStrong();
+            else return;
+        }
     }
     static void AddBoss()
-        => list.Add(EnemyType.Boss);
+    {
+        if (list.Count < Const.MAX_ENEMIES) list.Add(EnemyType.Boss);
+    }
     static void AddBoss(int times)
     {
-        for (int i = 0; i < times; i++) AddBoss();
+        for (int i = 0; i < times; i++)
+        {
+            if (list.Count < Const.MAX_ENEMIES) AddBoss();
+            else return;
+        }
     }
     static void AddLevel()
         => level++;

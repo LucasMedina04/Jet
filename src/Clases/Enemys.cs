@@ -2,7 +2,6 @@ namespace Clases;
 
 public class Enemy
 {
-    byte Aframe = 7;
     public byte posX;
     public byte posY = Const.ENEMY_POS;
     byte health;
@@ -56,28 +55,19 @@ public class Enemy
     }
     public void Damage()
     {
+        int aux = health - Player.ShootDamage;
+        if (aux <= 0)
+        {
+            health = 0;
+            return;
+        }
         health -= Player.ShootDamage;
-        if (!isDead)
-            AnimateTakeDamage();
-    }
-    void AnimateTakeDamage()
-    {
-        if (Aframe < 3)
-        {
-            Write.WriteAt("<O>", posX - 1, Const.ENEMY_POS, ConsoleColor.Red);
-            Aframe++;
-        }
-        else if (Aframe > 3 && Aframe <= 6)
-        {
-            Write.WriteAt("<O>", posX - 1, Const.ENEMY_POS, ConsoleColor.DarkRed);
-            Aframe++;
-        }
     }
     public void Update()
     {
         for (int i = 0; i < Player.shoots.Count; i++)
         {
-            if ((Player.shoots[i].posX == posX || Player.shoots[i].posX == posX - 1|| Player.shoots[i].posX == posX + 1) && Player.shoots[i].posY == posY + 1)
+            if ((Player.shoots[i].posX == posX || Player.shoots[i].posX == posX - 1|| Player.shoots[i].posX == posX + 1) && Player.shoots[i].posY == 1 + posY)
             {
                 Player.shoots.RemoveAt(i);
                 i--;
@@ -186,7 +176,7 @@ public class EnemyShoot
         {
             if (Player.Pos == PosX || Player.Pos + 1 == PosX || Player.Pos - 1 == PosX)
                 Player.Damage(damage, armorPenetration);
-            Write.WriteAt(" ", PosX, PosY);
+            Write.WriteAt(" ", PosX, PosY - 1);
             ResetShoot();
         }
         else
@@ -197,10 +187,8 @@ public class EnemyShoot
                 {
                     if (Player.shoots[i].posY <= PosY)
                     {
-                        Write.WriteAt(" ", PosX, Player.shoots[i].posY);
                         Write.WriteAt(" ", PosX, Player.shoots[i].posY + 1);
                         Player.shoots.RemoveAt(i);
-                        Write.WriteAt(" ", PosX, PosY);
                         Write.WriteAt(" ", PosX, PosY - 1);
                         ResetShoot();
                         break;
@@ -228,7 +216,7 @@ public static class EnemyController
 {
     static List<Enemy> enemies = new List<Enemy>();
     public static uint Enemies
-        => Convert.ToByte(enemies.Count);
+        => Convert.ToUInt32(enemies.Count);
     public static void AddEnemy(EnemyType type)
         => enemies.Add(new Enemy(Convert.ToByte(new Random().Next(2, Const.WINDOW_WIDTH - 1)), type));
     public static void Update()
@@ -246,4 +234,6 @@ public static class EnemyController
     }
     public static void Reset()
         => enemies.Clear();
+    public static byte GetEnemyHealth(int enemyIndex)
+        => enemies[enemyIndex].Health;
 }

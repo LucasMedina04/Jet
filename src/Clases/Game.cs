@@ -22,6 +22,10 @@ public class Game
     {
         Player.Update();
         EnemyController.Update();
+        if (Player.GameOver)
+            NewGame();
+        if (EnemyController.Enemies == 0)
+            LevelController.Update();
         /*Debug*/
         if (debug)
             Debug();
@@ -66,14 +70,15 @@ public class Game
     {
         LevelController.Restart();
         Player.ResetAll();
+        EnemyController.Reset();
         LevelController.Update();
         Const.GameEnded = false;
         Const.GamePaused = false;
         UI.WriteAll();
-        EnemyController.Reset();
         Player.Render();
         Thread.Sleep(1000);
-        Write.WriteAt("              " + LevelController.Level_ , Const.WINDOW_WIDTH / 2 - (7 - Convert.ToInt32(LevelController.Level_)), Const.WINDOW_HEIGHT / 2);
+        Write.WriteAt("                " + LevelController.Level_ , Const.WINDOW_WIDTH / 2 - (9 - Convert.ToInt32(LevelController.Level_)), Const.WINDOW_HEIGHT / 2);
+        Update();
         new Thread(()=>
         {
             while (!Const.GameEnded)

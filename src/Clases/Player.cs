@@ -21,6 +21,7 @@ public static class Player
     static int money;
     public static int Money => money;
     public static bool isDead => health <= 0;
+    public static bool GameOver => lives <= 0;
     public static bool isShielded => shield > 0;
     public static bool isFueled => fuel > 0;
 
@@ -117,7 +118,7 @@ public static class Player
     }
     public static void Update()
     {
-        if (shoots is not null)
+        if (shoots is not null && shoots.Count > 0)
         {
             for (int i = 0; i < shoots.Count; i++)
             {
