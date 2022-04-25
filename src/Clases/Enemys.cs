@@ -9,6 +9,10 @@ public class Enemy
     public bool isDead => health <= 0;
     public bool shooted;
     public EnemyShoot shoot;
+    byte score;
+    public uint Score => score;
+    uint money;
+    public uint Money => money;
     ConsoleColor color;
     public Enemy(byte pos, EnemyType type)
     {
@@ -18,22 +22,32 @@ public class Enemy
         {
             case EnemyType.Basic:
                 health = 20;
-                color = ConsoleColor.Red;
+                score = 10;
+                money = 100;
+                color = ConsoleColor.Green;
                 break;
             case EnemyType.Fast:
                 health = 30;
+                score = 15;
+                money = 150;
                 color = ConsoleColor.Yellow;
                 break;
             case EnemyType.Strong:
                 health = 60;
-                color = ConsoleColor.Green;
+                score = 30;
+                money = 300;
+                color = ConsoleColor.Red;
                 break;
             case EnemyType.AntiArmor:
                 health = 40;
+                score = 20;
+                money = 200;
                 color = ConsoleColor.Cyan;
                 break;
             case EnemyType.Boss:
                 health = 200;
+                score = 100;
+                money = 1000;
                 color = ConsoleColor.Magenta;
                 break;
         }
@@ -70,6 +84,7 @@ public class Enemy
             if ((Player.shoots[i].posX == posX || Player.shoots[i].posX == posX - 1|| Player.shoots[i].posX == posX + 1) && Player.shoots[i].posY == 1 + posY)
             {
                 Player.shoots.RemoveAt(i);
+                Write.WriteAt(" ", posX, posY + 1);
                 i--;
                 Damage();
             }
@@ -123,7 +138,7 @@ public class EnemyShoot
                 speed = 2;
                 damage = 8;
                 armorPenetration = false;
-                color = ConsoleColor.Red;
+                color = ConsoleColor.Green;
                 break;
             case EnemyType.Fast:
                 speed = 7;
@@ -135,7 +150,7 @@ public class EnemyShoot
                 speed = 4;
                 damage = 15;
                 armorPenetration = false;
-                color = ConsoleColor.Green;
+                color = ConsoleColor.Red;
                 break;
             case EnemyType.AntiArmor:
                 speed = 5;
@@ -226,7 +241,11 @@ public static class EnemyController
             enemies[i].Update();
             if (enemies[i].isDead)
             {
-                Write.WriteAt("   ", enemies[i].posX - 1, Const.ENEMY_POS);
+                Player.AddScore(enemies[i].Score);
+                Player.AddMoney(enemies[i].Money);
+                UI.UpdateScore();
+                Write.WriteAt("     ", enemies[i].posX - 2, Const.ENEMY_POS);
+                Write.WriteAt(" ", enemies[i].shoot.PosX, enemies[i].shoot.PosY - 1);
                 enemies.Remove(enemies[i]);
                 i--;
             }

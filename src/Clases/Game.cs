@@ -20,16 +20,19 @@ public class Game
         => Verifications.CheckKey(Console.ReadKey(true));
     static void Update()
     {
-        Player.Update();
-        EnemyController.Update();
-        if (Player.GameOver)
-            NewGame();
-        if (EnemyController.Enemies == 0)
-            LevelController.Update();
-        /*Debug*/
-        if (debug)
-            Debug();
-        /*Debug*/
+        if (!Const.Shoping)
+        {
+            Player.Update();
+            EnemyController.Update();
+            if (Player.GameOver)
+                NewGame();
+            if (EnemyController.Enemies == 0)
+                Shop.Open();
+            /*Debug*/
+            if (debug)
+                Debug();
+            /*Debug*/
+        }
     }
     internal static void Finallice()
     {
@@ -71,20 +74,19 @@ public class Game
         LevelController.Restart();
         Player.ResetAll();
         EnemyController.Reset();
-        LevelController.Update();
+        LevelController.Next();
         Const.GameEnded = false;
         Const.GamePaused = false;
         UI.WriteAll();
         Player.Render();
         Thread.Sleep(1000);
-        Write.WriteAt("                " + LevelController.Level_ , Const.WINDOW_WIDTH / 2 - (9 - Convert.ToInt32(LevelController.Level_)), Const.WINDOW_HEIGHT / 2);
         Update();
         new Thread(()=>
         {
             while (!Const.GameEnded)
             {
                 Fps();
-                if (!Const.GamePaused)
+                if (!Const.GamePaused && !Const.Shoping)
                 Update();
             }
         }).Start();
@@ -97,12 +99,15 @@ static class Verifications
     {
         if (!Const.GameEnded)
         {
-            if (key.Key == ConsoleKey.Escape)
+            if (Const.GamePaused)
             {
-                Pause();
-                return;
+                if (key.Key == ConsoleKey.Escape)
+                {
+                    Pause();
+                    return;
+                }
             }
-            if (!Const.GamePaused)
+            else if (!Const.Shoping)
             {
                 switch (key.Key)
                 {
@@ -175,7 +180,7 @@ static class Verifications
                         break;
                     case ConsoleKey.F9:
                         if (Game.debug)
-                            LevelController.Update();
+                            LevelController.Next();
                         break;
                     case ConsoleKey.F12:
                         if (Game.debug)
@@ -183,6 +188,26 @@ static class Verifications
                         else Game.debug = true;
                         break;
                     /*Debug*/
+                }
+            }
+            else 
+            {
+                switch (key.Key)
+                {
+                    case ConsoleKey.Escape:
+                        Shop.Close();
+                        break;
+                    case ConsoleKey.UpArrow:
+                        Shop.MoveUp();
+                        Shop.Update();
+                        break;
+                    case ConsoleKey.DownArrow:
+                        Shop.MoveDown();
+                        Shop.Update();
+                        break;
+                    case ConsoleKey.Spacebar:
+                        Shop.Buy();
+                        break;
                 }
             }
         }

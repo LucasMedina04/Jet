@@ -87,12 +87,8 @@ static class UI
     static void WriteMoney()
     {
         Write.WriteAt("Money: ", WINDOW_WIDTH + 2, 7);
+        Write.WriteAt("       ", WINDOW_WIDTH + 9, 7);
         Write.WriteAt("$" + Player.Money.ToString(), WINDOW_WIDTH + 9, 7, ConsoleColor.Yellow);
-    }
-    static void WriteLevel()
-    {
-        /*Write.WriteAt("Level: ", WINDOW_WIDTH + 2, 10);
-        Write.WriteAt(Player.Level.ToString(), WINDOW_WIDTH + 9, 10, ConsoleColor.Green);*/
     }
     static void WriteFuel()
     {
@@ -177,7 +173,6 @@ static class UI
         WriteLives();
         WriteScore();
         WriteMoney();
-        WriteLevel();
         WriteFuel();
         WriteShield();
         WriteHealth();
@@ -194,4 +189,15 @@ static class UI
         => WriteBulletSpeed();
     public static void UpdateDamage()
         => WriteDamage();
+    public static void UpdateFuel()
+        => WriteFuel();
+    public static void UpdateBullets()
+        => Write.WriteAt(Player.MaxShoots.ToString(), WINDOW_WIDTH + 9, 9, ConsoleColor.Red);
+    public static void UpdateScore()
+    {
+        WriteScore();
+        WriteMoney();
+    }
+    public static void UpdateMoney()
+        => WriteMoney();
 }

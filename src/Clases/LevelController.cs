@@ -16,13 +16,13 @@ static class LevelController
     static List<EnemyType> list = new();
     public static void Restart()
         => level = 0;
-    public static void Update()
+    
+    public static void Next()
     {
         level++;
-        if (level > 1)
-            Shop.Open();
         list.Clear();
         Verifications.Clear();
+        Player.ResetBullets();
         int lenght = level.ToString().Length / 2;
         Write.WriteAt("Loading level " + level, Const.WINDOW_WIDTH / 2 - (8 - lenght), Const.WINDOW_HEIGHT / 2, ConsoleColor.Green);
         Random rnd = new(DateTime.Now.Millisecond);
@@ -76,6 +76,7 @@ static class LevelController
                     AddFast();
                     break;
             }
+            Write.WriteAt("                                   ", 1, Const.WINDOW_HEIGHT / 2);
             Level.Update(list);
             return;
         }
@@ -110,6 +111,7 @@ static class LevelController
             }
         }
         Level.Update(list);
+        Write.WriteAt("                                   ", 1, Const.WINDOW_HEIGHT / 2);
     }
     static void AddBasic()
     {

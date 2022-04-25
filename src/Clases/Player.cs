@@ -18,8 +18,10 @@ public static class Player
     public static byte BulletSpeed => bulletSpeed;
     static byte damage = 8;
     public static byte ShootDamage => damage;
-    static int money;
-    public static int Money => money;
+    static uint money;
+    public static uint Money => money;
+    static byte maxShoots = 10;
+    public static byte MaxShoots => maxShoots;
     public static bool isDead => health <= 0;
     public static bool GameOver => lives <= 0;
     public static bool isShielded => shield > 0;
@@ -77,10 +79,12 @@ public static class Player
             damage += 8;
         else damage = Const.MAX_DAMAGE;
     }
-    public static void AddMoney(int Money)
+    public static void AddMoney(uint Money)
         => money += Money;
-    public static void SubstractMoney(int Money)
+    public static void SubstractMoney(uint Money)
         => money -= Money;
+    public static void AddBullets()
+        => maxShoots += 3;
     public static void ResetAll()
     {
         score = 0;
@@ -133,11 +137,22 @@ public static class Player
             }
         }
     }
+    public static void ResetBullets()
+    {
+        if (shoots is not null && shoots.Count > 0)
+        {
+            for (int i = 0; i < shoots.Count; i++)
+            {
+                Write.WriteAt(" ", shoots[i].posX, shoots[i].posY - 1);
+            }
+            shoots.Clear();
+        }
+    }
     public static void UpdateHealth()
         => UI.UpdateHealth();
     public static void Shoot()
     {
-        if (shoots.Count < Const.MAX_SHOOTS)
+        if (shoots.Count < maxShoots)
             shoots.Add(new PlayerShoot(pos));
     }
     public static void Damage(byte Damage, bool AntiArmor)

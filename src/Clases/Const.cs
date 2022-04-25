@@ -1,4 +1,5 @@
 namespace Clases;
+
 static class Const
 {
     public static bool GameEnded = false;
@@ -17,5 +18,4 @@ static class Const
     public const uint MAX_ENEMIES = 30;
     public const byte WINDOW_WIDTH = 36;
     public const byte WINDOW_HEIGHT = 29;
-    public const byte MAX_SHOOTS = 10;
 }
