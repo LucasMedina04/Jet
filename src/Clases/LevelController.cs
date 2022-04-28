@@ -19,6 +19,7 @@ static class LevelController
     
     public static void Next()
     {
+        Const.GeneratingLevel = true;
         level++;
         list.Clear();
         Verifications.Clear();
@@ -78,6 +79,7 @@ static class LevelController
             }
             Write.WriteAt("                                   ", 1, Const.WINDOW_HEIGHT / 2);
             Level.Update(list);
+            Const.GeneratingLevel = false;
             return;
         }
         else
@@ -112,6 +114,7 @@ static class LevelController
         }
         Level.Update(list);
         Write.WriteAt("                                   ", 1, Const.WINDOW_HEIGHT / 2);
+        Const.GeneratingLevel = false;
     }
     static void AddBasic()
     {

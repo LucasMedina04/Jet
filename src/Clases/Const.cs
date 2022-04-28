@@ -5,6 +5,7 @@ static class Const
     public static bool GameEnded = false;
     public static bool GamePaused = false;
     public static bool Shoping = false;
+    public static bool GeneratingLevel = false;
     public const byte ENEMY_POS = 1;
     public const byte SHOOT_POS = 2;
     public const byte PLAYER_POS = 28;

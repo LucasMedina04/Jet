@@ -10,13 +10,16 @@ static class Shop
 
     public static void Open()
     {
-        Const.Shoping = true;
-        Verifications.Clear();
-        Update();
+        if (!Const.GeneratingLevel)
+        {
+            Const.Shoping = true;
+            Verifications.Clear();
+            Update();
+            WriteShop();
+        }
     }
     public static void WriteShop()
     {
-        Const.Shoping = true;
         Write.WriteAt("SHOP", Const.WINDOW_WIDTH / 2 - 3, 2, ConsoleColor.Green);
         Write.WriteAt("1. Health", 2, 5, ConsoleColor.Gray);
         Write.WriteAt("2. Shield", 2, 7, ConsoleColor.Gray);
@@ -27,7 +30,6 @@ static class Shop
     }
     public static void Update()
     {
-        WriteShop();
         switch (idx)
         {
             case 0:
