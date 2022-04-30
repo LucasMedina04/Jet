@@ -1,1 +1,2 @@
-﻿using Clases;Game.Main();
+﻿using Clases;
+Begin.begin();

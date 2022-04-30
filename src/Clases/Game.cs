@@ -1,6 +1,6 @@
 namespace Clases;
 
-public class Game
+class Game
 {
     public static bool debug = false;
     static byte frame = 0;
@@ -34,7 +34,7 @@ public class Game
             /*Debug*/
         }
     }
-    internal static void Finallice()
+    public static void Finallice()
     {
         Console.Clear();
         Console.WriteLine("Press any key to exit");

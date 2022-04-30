@@ -19,4 +19,5 @@ static class Const
     public const uint MAX_ENEMIES = 30;
     public const byte WINDOW_WIDTH = 36;
     public const byte WINDOW_HEIGHT = 29;
+    public static List<string> Top10 = new List<string>();
 }
